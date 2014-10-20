@@ -1,4 +1,3 @@
-"""CNN.com Test"""
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -6,19 +5,19 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 import unittest, time, re
 
-class CNNSearch(unittest.TestCase):
+class GoogleSearch2(unittest.TestCase):
 	def setUp(self):
-		self.driver = webdriver.firefox()
-		self.driver.implicity_wait(30)
-		self.base_url = "cnn.com"
+		self.driver = webdriver.Firefox()
+		self.driver.implicitly_wait(30)
+		self.base_url = "www.google.com"
 		self.verificationErrors = []
 		self.accept_next_alert = True
 		
-	def CNN_Search(self):
+	def test_google_search(self):
 		driver = self.driver
-		driver.get(self.base_url+ '2014/10/20/health/ebola-outbreak-roundup/index.html?hpt=hp_t1')
-		driver.find_element_by_id("body-wrapper").click()
-		
+		driver.find_element_by_id("gbqfq").clear()
+		driver.find_element_by_id("gbqfq").send_keys("Grand Central")
+	
 	def is_element_present(self, how, what):
 		try: self.driver.find_element(by=how, value=what)
 		except NoSuchElementException, e: return False
@@ -26,10 +25,10 @@ class CNNSearch(unittest.TestCase):
 		
 	def is_alert_present(self):
 		try: self.driver.switch_to_alert()
-		except NoAlertPresentException, e: return False 
+		except NoAlertPresentException, e: return False
 		return True
 		
-	def close_alert_and_get_its_text(self):
+	def close_alert_return_text(self):
 		try:
 			alert = self.driver.switch_to_alert()
 			alert_text = alert.text
@@ -37,7 +36,7 @@ class CNNSearch(unittest.TestCase):
 				alert.accept()
 			else:
 				alert.dismiss()
-			return aler_text
+			return alert_text
 		finally: self.accept_next_alert = True
 		
 	def tearDown(self):
